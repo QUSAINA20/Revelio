@@ -18,9 +18,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'otp',
+        'email_verified_at',
+        'otp_expiry'
     ];
 
     /**
@@ -42,4 +45,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Check if the user's email address is verified.
+     *
+     * @return bool
+     */
+    public function isVerified()
+    {
+        return !is_null($this->email_verified_at);
+    }
 }
