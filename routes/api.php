@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\OtpController;
+use App\Http\Controllers\EspController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,6 @@ Route::post('/otp/change', [OTPController::class, 'changePassword']);
 Route::post('/otp/resend', [OTPController::class, 'resendOTP']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/esp', [EspController::class, 'store']);
     Route::delete('/logout', [AuthController::class, 'logout']);
 });

@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('esps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('lang');
-            $table->string('lat');
+            $table->decimal('lang', 10, 7); // Latitude
+            $table->decimal('lat', 10, 7); // Longitude
+            $table->unsignedTinyInteger('battery_percentage'); // Battery percentage (0-100)
+            $table->string('name'); // Name of the ESP
+            $table->boolean('is_online'); // Online status (true/false)
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

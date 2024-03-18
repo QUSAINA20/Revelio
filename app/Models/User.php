@@ -45,6 +45,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function esps()
+    {
+        return $this->hasMany(Esp::class);
+    }
 
     /**
      * Check if the user's email address is verified.
