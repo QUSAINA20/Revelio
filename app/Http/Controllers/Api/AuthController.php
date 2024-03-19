@@ -103,6 +103,7 @@ class AuthController extends Controller
 
         // Generate token
         $token = $user->createToken('token-name')->plainTextToken;
+        $user->load('esps');
 
         $response = [
             'status' => 'success',

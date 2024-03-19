@@ -4,6 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <title>Laravel</title>
 
@@ -1004,17 +1006,42 @@
         </div>
     </div>
     <script>
+        console.log(document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
         const pusher = new Pusher('c1f9c7029b21549c3dd5', {
-            cluster: 'eu'
+            cluster: 'eu',
+            channelAuthorization: {
+                endpoint: `http://localhost:8000/api/pusher/auth`,
+                headers: {
+                    "Authorization": "24|YT3ewXOJHywAvlnF6reIwU6qZSEaKpdFNbnP6h7y2b683403",
+                    'X-CSRF-TOKEN': "TDDpCkOVZ9CAxTiFRv0wHCYdnImOiBAnzeOltVNT",
+                    'Access-Control-Allow-Origin': '*'
+                },
+                customData: {
+                    socket_id: null,
+                    channel_name: null
+
+                },
+                // Update the socket ID before making the request
+                beforeSend: function(xhr, requestOptions) {
+                    requestOptions.customData.socket_id = pusher.connection.socket_id;
+                }
+            }
         });
-        const channel = pusher.subscribe('esp.7');
+        pusher.connection.bind("connected", () => {
+            socketId = pusher.connection.socket_id;
+            console.log(socketId);
+        })
+        const channel = pusher.subscribe('private-esp.7');
 
         //Receive messages
         channel.bind('esp.7.updated', function(data) {
             console.log(data); // Log the ESP data
             // Your other code here
         });
-
+        // Log any errors during channel authorization
+        pusher.connection.bind('error', function(error) {
+            console.error('Pusher connection error:', error);
+        });
         //Broadcast messages
     </script>
 </body>

@@ -31,7 +31,7 @@ class EspEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('esp.' . $this->esp->id);
+        return new PrivateChannel('esp.' . $this->esp->id);
     }
 
     public function broadcastWith()
